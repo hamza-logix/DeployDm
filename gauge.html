@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Membership Health Gauge</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #33475b;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 6px 2px 4px;
+  }
+  .track {
+    position: relative;
+    height: 14px;
+    border-radius: 7px;
+    overflow: visible;
+    /* red -> amber -> green, stops tuned to match the mockup */
+    background: linear-gradient(
+      to right,
+      #e74c3c 0%,
+      #e74c3c 30%,
+      #f39c12 45%,
+      #f5c518 60%,
+      #27ae60 72%,
+      #21a355 100%
+    );
+  }
+  .track-inner {
+    position: absolute;
+    inset: 0;
+    border-radius: 7px;
+  }
+  .marker {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 3px;
+    margin-left: -1.5px;
+    background: #1b2733;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65);
+  }
+  .scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1;
+    color: #7c98b6;
+  }
+  .scale .mid { color: #7c98b6; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="track">
+      <div class="track-inner"></div>
+      <div class="marker" id="marker"></div>
+    </div>
+    <div class="scale">
+      <span>0 &middot; At risk</span>
+      <span class="mid">50</span>
+      <span>100 &middot; Excellent</span>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var raw = Number(params.get("score"));
+      if (isNaN(raw)) raw = 0;
+      var score = Math.max(0, Math.min(100, raw));
+      document.getElementById("marker").style.left = score + "%";
+    })();
+  </script>
+</body>
+</html>
